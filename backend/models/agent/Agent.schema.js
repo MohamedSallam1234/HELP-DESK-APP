@@ -20,6 +20,12 @@ const AgentSchema = new mongoose.Schema({
         type: String,
         default: 'Agent'
     },
+    rating: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 100,
+    },
     tickets: [
         {
             type: mongoose.Schema.Types.ObjectId,

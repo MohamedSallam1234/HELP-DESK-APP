@@ -2,34 +2,33 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ReportSchema = new Schema({
-    user: {
+    ticket: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Ticket',
         required: true,
+    },
+    ticket_status:{
+        type: String,
+        maxLength: 100,
+        required: true,
+        enum: ['Pending', 'Open', 'Closed'],
+        default: 'Pending'
+    },
+    agent_performance:{
+        type:Number,
+        min: 0,
+        max:100,
+    },
+
+    resolution_time: {
+        type: Number,
+        default: 0,
     },
     message: {
         type: String,
+        maxlength: 1000,
         required: true,
-        maxLength: 500,
-    },
-    isClosed: {
-        type: Boolean,
-        default: false,
-    },
-    closedAt: {
-        type: Date,
-    },
-    closedBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-    },
-    closedMessage: {
-        type: String,
-        maxLength: 1000,
-    },
-    date: {
-        type: Date,
-        default: Date.now,
+        default: ''
     },
 });
 
