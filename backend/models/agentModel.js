@@ -1,28 +1,15 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const AgentSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
+const AgentSchema = new Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true,
-        minLength:8,
-        maxLength: 100
-    },
-    role: {
-        type: String,
-        default: 'Agent'
     },
     rating: {
         type: Number,
-        default: 0,
+        default: 100,
         min: 0,
         max: 100,
     },
@@ -52,4 +39,5 @@ const AgentSchema = new mongoose.Schema({
     }
 });
 
-module.exports = Agent = mongoose.model('agent', AgentSchema);
+
+module.exports = mongoose.model('Agent', AgentSchema);

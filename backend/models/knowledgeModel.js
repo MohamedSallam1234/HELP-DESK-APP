@@ -15,3 +15,4 @@ const KnowledgeBaseSchema = new mongoose.Schema({
         required:true
     }
 });
+module.exports=mongoose.model("knowledgebase",KnowledgeBaseSchema);

@@ -7,7 +7,7 @@ const communicationSchema = new mongoose.Schema({
     },
     supportAgent: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Agent',
+        ref: 'User',
         required: true
     },
     message: {

@@ -7,7 +7,7 @@ const TicketSchema = new mongoose.Schema({
     },
     agent:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Agent'
+        ref:'User'
     },
 
     issueType:{
@@ -73,7 +73,7 @@ const TicketSchema = new mongoose.Schema({
     ],
 }, {timestamps: true});
 
-module.exports= Ticket= mongoose.model('ticket',TicketSchema);
+module.exports= mongoose.model('ticket',TicketSchema);
 
 
 
