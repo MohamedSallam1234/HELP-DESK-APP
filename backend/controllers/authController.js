@@ -10,7 +10,7 @@ module.exports.register = async (req,res)=>{
     const {email,password,name} = req.body
     if(!email || !password || !name)return res.json({mssg:"Email and Password and Name are Required"})
     try{
-    await userValidate.validateAsync(req.body)
+    
     const userExist = await userModel.findOne({email})
     if(userExist) return res.json({mssg:'User already exists'});
 
