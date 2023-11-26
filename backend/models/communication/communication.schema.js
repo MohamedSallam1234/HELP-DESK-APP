@@ -7,7 +7,7 @@ const communicationSchema = new mongoose.Schema({
     },
     supportAgent: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Agent',
+        ref: 'User',
         required: true
     },
     message: {
@@ -20,4 +20,4 @@ const communicationSchema = new mongoose.Schema({
     },
 
 });
-module.exports = mongoose.model('communication', communicationSchema);
+module.exports =communication =mongoose.model('communication', communicationSchema);

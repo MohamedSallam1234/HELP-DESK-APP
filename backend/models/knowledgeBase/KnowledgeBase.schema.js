@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
 const KnowledgeBaseSchema = new mongoose.Schema({
-   question:{
-       type:String,
-       required:true
-   },
+    question:{
+        type:String,
+        required:true
+    },
     answer:{
-      type:String,
-      required:true
+        type:String,
+        required:true
     },
     category:{
         type:String,
@@ -15,3 +15,4 @@ const KnowledgeBaseSchema = new mongoose.Schema({
         required:true
     }
 });
+module.exports= KnowledgeBase =mongoose.model("knowledgeBase",KnowledgeBaseSchema);

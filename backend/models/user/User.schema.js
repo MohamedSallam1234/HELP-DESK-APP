@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Create Schema
 const UserSchema = new Schema({
     name: {
         type: String,
         required: true,
-        maxLength:50
+        maxLength: 50
     },
     email: {
         type: String,
@@ -16,30 +15,20 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minLength:8,
-        maxLength: 32,
+        minLength: 8,
+        maxLength: 1000,
     },
+    // user->1 , admin->2 , manger->3,agent->4
     role: {
-        type: String,
-        enum: ['user', 'admin', 'agent'],
-        default: 'user'
+        type: Number,
+        min:1,
+        max:4,
+        default: 1
     },
     date: {
         type: Date,
         default: Date.now
-    },
-    refreshJWT: {
-        token: {
-            type: String,
-            maxlength: 500,
-            default: "",
-        },
-        addedAt: {
-            type: Date,
-            required: true,
-            default: Date.now(),
-        },
-    },
+    }
 });
 
-module.exports = User = mongoose.model('user', UserSchema);
+module.exports = User =mongoose.model('User', UserSchema);

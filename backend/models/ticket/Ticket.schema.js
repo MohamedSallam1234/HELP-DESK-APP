@@ -7,7 +7,7 @@ const TicketSchema = new mongoose.Schema({
     },
     agent:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Agent'
+        ref:'User'
     },
 
     issueType:{
@@ -16,21 +16,21 @@ const TicketSchema = new mongoose.Schema({
         required:true
     },
     subCategory:{
-      type:String,
-      required:true,
-      maxLength:100,
+        type:String,
+        required:true,
+        maxLength:100,
     },
     priority:{
-      type:String,
-      enum:['low','medium','high'],
-      required:true,
+        type:String,
+        enum:['low','medium','high'],
+        required:true,
     },
     status:{
-      type:String,
-      maxLength: 100,
-      required:true,
-      enum:['Pending','Open','Closed'],
-      default:'Pending'
+        type:String,
+        maxLength: 100,
+        required:true,
+        enum:['Pending','Open','Closed'],
+        default:'Pending'
     },
     ticket_rating:{
         type:Number,
@@ -73,10 +73,4 @@ const TicketSchema = new mongoose.Schema({
     ],
 }, {timestamps: true});
 
-module.exports= Ticket= mongoose.model('ticket',TicketSchema);
-
-
-
-
-
-
+module.exports= Ticket =mongoose.model('ticket',TicketSchema);
