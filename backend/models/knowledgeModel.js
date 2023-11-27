@@ -12,7 +12,8 @@ const KnowledgeBaseSchema = new mongoose.Schema({
     category:{
         type:String,
         enum: ['software', 'hardware', 'network'],
-        required:true
+        required:true,
+        default:""
     }
 });
 module.exports=mongoose.model("knowledgebase",KnowledgeBaseSchema);
