@@ -52,4 +52,4 @@ const AgentSchema = new mongoose.Schema({
     }
 });
 
-module.exports =Agent= mongoose.model('Agent', AgentSchema);
+module.exports = Agent = mongoose.model('Agent', AgentSchema);
