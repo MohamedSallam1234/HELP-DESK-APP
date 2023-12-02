@@ -13,7 +13,19 @@ const AgentSchema = new Schema({
         min: 0,
         max: 100,
     },
-    tickets: [
+    tickets_high: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Ticket'
+        }
+    ],
+    tickets_medium: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Ticket'
+        }
+    ],
+    tickets_low: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Ticket'
@@ -23,19 +35,13 @@ const AgentSchema = new Schema({
         type: Boolean,
         default: true
     },
-    priority: {
-        software: {
-            type: Number,
-            default: 0
-        },
-        hardware: {
-            type: Number,
-            default: 0
-        },
-        network: {
-            type: Number,
-            default: 0
-        }
+    workinghours:{
+      type:Number,
+      default:10
+    },
+    major: {
+     type :String,
+     default:"software"
     }
 });
 
