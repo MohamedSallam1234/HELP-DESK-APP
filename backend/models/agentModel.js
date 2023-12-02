@@ -13,31 +13,15 @@ const AgentSchema = new Schema({
         min: 0,
         max: 100,
     },
-    tickets_high: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Ticket'
-        }
-    ],
-    tickets_medium: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Ticket'
-        }
-    ],
-    tickets_low: [
+    tickets_queue: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Ticket'
         }
     ],
     availability: {
-        type: Boolean,
-        default: true
-    },
-    workinghours:{
-      type:Number,
-      default:10
+        type: Number,
+        default: 5
     },
     major: {
      type :String,
