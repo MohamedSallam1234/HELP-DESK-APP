@@ -29,8 +29,8 @@ const TicketSchema = new mongoose.Schema({
       type:String,
       maxLength: 100,
       required:true,
-      enum:['Pending','Closed'],
-      default:'Pending'
+      enum:['open','pending','closed'],
+      default:'open'
     },
     ticket_rating:{
         type:Number,
@@ -60,7 +60,7 @@ const TicketSchema = new mongoose.Schema({
         required:true,
         default:Date.now(),
     }
-}, {timestamps: true});
+})
 
 module.exports= mongoose.model('ticket',TicketSchema);
 

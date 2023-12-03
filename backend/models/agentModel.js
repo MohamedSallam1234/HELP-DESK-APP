@@ -21,10 +21,12 @@ const AgentSchema = new Schema({
     ],
     availability: {
         type: Number,
-        default: 5
+        required:true,
+        default: 0
     },
     major: {
      type :String,
+     required:true,
      default:"software"
     }
 });

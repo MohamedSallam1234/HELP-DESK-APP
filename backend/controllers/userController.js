@@ -4,7 +4,7 @@ const knowledgeModel = require("../models/knowledgeModel")
 const agentModel = require("../models/agentModel")
 const ticketModel = require("../models/ticketModel")
 const automatedModel = require("../models/automatedworkflowModel")
-
+const ticketmanagerModel = require("../models/ticketmanagerModel")
 
 // update user info
 module.exports.update = async (req,res)=>{
@@ -42,143 +42,155 @@ module.exports.Konwledge_base = async(req,res)=>{
 }
 
 // create a ticket
-
 module.exports.sendTicket = async (req,res)=>{
-  const{issueType,subCategory,priority,mssg} = req.body
-  try{
-    if(!issueType || !subCategory || !priority || !mssg)return res.json({mssg:"All fields are needed"})
-     
-    if(issueType == "software"){
-      const agent = await agentModel.findOne({major:issueType})
-      if(agent.workinghours < 9){
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent._id},{$push:{tickets_low:ticket._id}})
-      }
-      // the other two agents
-      const agent_hardware = await agentModel.findOne({major:"hardware"})
-      const agent_network = await agentModel.findOne({major:"network"})
- 
-      //check if he finished his 90% hours for hardware 
-      if(agent_hardware.workinghours>=9 && agent_hardware.workinghours<10){
+const{issueType,subCategory,priority,mssg} = req.body
+try{
+ // create the ticket 
+const ticket = await ticketModel.create({user:req.user._id,issueType,subCategory,priority,mssg,status:"open"})
+// insert ticketId in ticketManger based on priority
+if(priority === "high") await ticketmanagerModel.updateOne({Manager_number:1},{$push:{high_priority:ticket._id}})
+if(priority === "medium") await ticketmanagerModel.updateOne({Manager_number:1},{$push:{medium_priority:ticket._id}})
+if(priority === "low") await ticketmanagerModel.updateOne({Manager_number:1},{$push:{low_priority:ticket._id}})
 
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent_hardware._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent_hardware._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent_hardware._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent_hardware._id},{$push:{tickets_low:ticket._id}})
+//Get the tickets in ticket_Manger
+const ticket_Manager = await ticketmanagerModel.findOne({Manager_number:1})
 
-      }else if(agent_network.workinghours >= 9 && agent_network.workinghours<10){
+//loop on high priority tickets and assign it to agent if he is available
+for(let i=0; i <ticket_Manager.high_priority.length;i++){
 
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent_network._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent_network._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent_network._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent_network._id},{$push:{tickets_low:ticket._id}})
-      }else{
-        
-        //if there is no one avalible then put it any way in software agent
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent._id},{$push:{tickets_low:ticket._id}})
-      }
-      return res.json({mssg:"Your Request is sent"})
+  const ticket_details = await ticketModel.findOne({_id:ticket_Manager.high_priority[i]})
+
+  if(ticket_details.issueType === "software"){
+    const softwareAgent = await agentModel.findOne({major:'software'})
+    if(softwareAgent.availability < 5){
+      await agentModel.updateOne({_id:softwareAgent._id},{$push:{tickets_queue:ticket_Manager.high_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:softwareAgent._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{high_priority:-1}})
     }
-
-
-    else if(issueType == "hardware"){
-
-      const agent = await agentModel.findOne({major:issueType})
-      if(agent.workinghours < 9){
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent._id},{$push:{tickets_low:ticket._id}})
-      }
-      // the other two agents
-      const agent_software = await agentModel.findOne({major:"software"})
-      const agent_network = await agentModel.findOne({major:"network"})
- 
-      //check if he finished his 90% hours for hardware 
-      if(agent_software.workinghours>=9 && agent_software.workinghours<10){
-
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent_software._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent_software._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent_software._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent_software._id},{$push:{tickets_low:ticket._id}})
-
-      }else if(agent_network.workinghours >= 9 && agent_network.workinghours<10){
-
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent_network._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent_network._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent_network._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent_network._id},{$push:{tickets_low:ticket._id}})
-      }else{
-        
-        //if there is no one avalible then put it any way in software agent
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent._id},{$push:{tickets_low:ticket._id}})
-      }
-      return res.json({mssg:"Your Request is sent"})
-
-    }else{
-
-      const agent = await agentModel.findOne({major:issueType})
-      if(agent.workinghours < 9){
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent._id},{$push:{tickets_low:ticket._id}})
-      }
-      // the other two agents
-      const agent_hardware = await agentModel.findOne({major:"hardware"})
-      const agent_software = await agentModel.findOne({major:"software"})
- 
-      //check if he finished his 90% hours for hardware 
-      if(agent_hardware.workinghours>=9 && agent_hardware.workinghours<10){
-
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent_hardware._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent_hardware._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent_hardware._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent_hardware._id},{$push:{tickets_low:ticket._id}})
-
-      }else if(agent_software.workinghours >= 9 && agent_software.workinghours<10){
-
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent_network._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent_software._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent_software._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent_software._id},{$push:{tickets_low:ticket._id}})
-      }else{
-        
-        //if there is no one avalible then put it any way in software agent
-        const ticket = await ticketModel.create({user:req.user._id,agent:agent._id,issueType,subCategory,priority,mssg})
-        // insert ticket to agent according to priority
-        if(priority =="high")await agentModel.updateOne({_id:agent._id},{$push:{tickets_high:ticket._id}})
-        if(priority =="medium")await agentModel.updateOne({_id:agent._id},{$push:{tickets_medium:ticket._id}})
-        if(priority =="low")await agentModel.updateOne({_id:agent._id},{$push:{tickets_low:ticket._id}})
-      }
-      return res.json({mssg:"Your Request is sent"})
-
-    }
-
-
-  }catch(err){
-    console.log(err)
-    res.json({mssg:err})
   }
+  if(ticket_details.issueType === "hardware"){
+    const hardwareAgent = await agentModel.findOne({major:'hardware'})
+    if(hardwareAgent.availability < 5){
+      await agentModel.updateOne({_id:hardwareAgent._id},{$push:{tickets_queue:ticket_Manager.high_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:hardwareAgent._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{high_priority:-1}})
+    }
+  }
+  if(ticket_details.issueType === "network"){
+    const networkAgent = await agentModel.findOne({major:'network'})
+    if(networkAgent.availability < 5){
+      await agentModel.updateOne({_id:networkAgent._id},{$push:{tickets_queue:ticket_Manager.high_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:networkAgent._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{high_priority:-1}})
+    }
+  }
+}
+
+//loop on medium priority tickets and assign it to agent if he is available
+for(let i=0; i <ticket_Manager.medium_priority.length;i++){
+
+  const ticket_details = await ticketModel.findOne({_id:ticket_Manager.medium_priority[i]})
+
+  if(ticket_details.issueType === "software"){
+    const softwareAgent = await agentModel.findOne({major:'software'})
+    const softwarehelper = await agentModel.findOne({major:'hardware'})
+    if(softwareAgent.availability < 5){
+      await agentModel.updateOne({_id:softwareAgent._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:softwareAgent._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+    }
+    else if(softwarehelper.availability<5){
+      await agentModel.updateOne({_id:softwarehelper._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:softwarehelper._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+    }
+  }
+  if(ticket_details.issueType === "hardware"){
+    const hardwareAgent = await agentModel.findOne({major:'hardware'})
+    const hardwarehelper = await agentModel.findOne({major:'network'})
+    if(hardwareAgent.availability < 5){
+      await agentModel.updateOne({_id:hardwareAgent._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:hardwareAgent._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+    }
+    else if(hardwarehelper.availability < 5){
+      await agentModel.updateOne({_id:hardwarehelper._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:hardwarehelper._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+    }
+  }
+  if(ticket_details.issueType === "network"){
+    const networkAgent = await agentModel.findOne({major:'network'})
+    const networkhelper = await agentModel.findOne({major:'software'})
+    if(networkAgent.availability < 5){
+      await agentModel.updateOne({_id:networkAgent._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:networkAgent._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+    }
+    else if(networkhelper.availability < 5){
+      await agentModel.updateOne({_id:networkhelper._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:networkhelper._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+    }
+  }
+}
+
+// low priority
+
+for(let i=0; i <ticket_Manager.low_priority.length;i++){
+
+  const ticket_details = await ticketModel.findOne({_id:ticket_Manager.low_priority[i]})
+
+  if(ticket_details.issueType === "software"){
+    const softwareAgent = await agentModel.findOne({major:'software'})
+    const shelper = await agentModel.findOne({major:'network'})
+    if(softwareAgent.availability < 5){
+      await agentModel.updateOne({_id:softwareAgent._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:softwareAgent._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+    }
+    else if(shelper.availability<5){
+      await agentModel.updateOne({_id:shelper._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:shelper._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+    }
+  }
+  if(ticket_details.issueType === "hardware"){
+    const hardwareAgent = await agentModel.findOne({major:'hardware'})
+    const hhelper = await agentModel.findOne({major:'software'})
+    if(hardwareAgent.availability < 5){
+      await agentModel.updateOne({_id:hardwareAgent._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:hardwareAgent._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+    }
+   else if(hhelper.availability < 5){
+      await agentModel.updateOne({_id:hhelper._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:hhelper._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+    }
+  }
+  if(ticket_details.issueType === "network"){
+    const networkAgent = await agentModel.findOne({major:'network'})
+    const nhelper = await agentModel.findOne({major:'hardware'})
+    if(networkAgent.availability < 5){
+      await agentModel.updateOne({_id:networkAgent._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:networkAgent._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+    }
+    else if(nhelper.availability < 5){
+      await agentModel.updateOne({_id:nhelper._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
+      await ticketModel.updateOne({_id:ticket_details._id},{agent:nhelper._id,status:"pending"})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+    }
+  }
+}
+return res.json({mssg:"Ticket has been created"})
+
+}catch(err){
+  console.log(err)
+  return res.json({mssg:err})
+}
+
 }
 
 // Get automated solution
