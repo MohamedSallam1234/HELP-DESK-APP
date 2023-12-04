@@ -65,7 +65,7 @@ for(let i=0; i <ticket_Manager.high_priority.length;i++){
     if(softwareAgent.availability < 5){
       await agentModel.updateOne({_id:softwareAgent._id},{$push:{tickets_queue:ticket_Manager.high_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:softwareAgent._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{high_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{high_priority:ticket_Manager.high_priority[i]}})
     }
   }
   if(ticket_details.issueType === "hardware"){
@@ -73,7 +73,7 @@ for(let i=0; i <ticket_Manager.high_priority.length;i++){
     if(hardwareAgent.availability < 5){
       await agentModel.updateOne({_id:hardwareAgent._id},{$push:{tickets_queue:ticket_Manager.high_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:hardwareAgent._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{high_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{high_priority:ticket_Manager.high_priority[i]}})
     }
   }
   if(ticket_details.issueType === "network"){
@@ -81,7 +81,7 @@ for(let i=0; i <ticket_Manager.high_priority.length;i++){
     if(networkAgent.availability < 5){
       await agentModel.updateOne({_id:networkAgent._id},{$push:{tickets_queue:ticket_Manager.high_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:networkAgent._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{high_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{high_priority:ticket_Manager.high_priority[i]}})
     }
   }
 }
@@ -97,12 +97,12 @@ for(let i=0; i <ticket_Manager.medium_priority.length;i++){
     if(softwareAgent.availability < 5){
       await agentModel.updateOne({_id:softwareAgent._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:softwareAgent._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{medium_priority:ticket_Manager.medium_priority[i]}})
     }
     else if(softwarehelper.availability<5){
       await agentModel.updateOne({_id:softwarehelper._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:softwarehelper._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{medium_priority:ticket_Manager.medium_priority[i]}})
     }
   }
   if(ticket_details.issueType === "hardware"){
@@ -111,12 +111,12 @@ for(let i=0; i <ticket_Manager.medium_priority.length;i++){
     if(hardwareAgent.availability < 5){
       await agentModel.updateOne({_id:hardwareAgent._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:hardwareAgent._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{medium_priority:ticket_Manager.medium_priority[i]}})
     }
     else if(hardwarehelper.availability < 5){
       await agentModel.updateOne({_id:hardwarehelper._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:hardwarehelper._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{medium_priority:ticket_Manager.medium_priority[i]}})
     }
   }
   if(ticket_details.issueType === "network"){
@@ -125,12 +125,12 @@ for(let i=0; i <ticket_Manager.medium_priority.length;i++){
     if(networkAgent.availability < 5){
       await agentModel.updateOne({_id:networkAgent._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:networkAgent._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{medium_priority:ticket_Manager.medium_priority[i]}})
     }
     else if(networkhelper.availability < 5){
       await agentModel.updateOne({_id:networkhelper._id},{$push:{tickets_queue:ticket_Manager.medium_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:networkhelper._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{medium_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{medium_priority:ticket_Manager.medium_priority[i]}})
     }
   }
 }
@@ -147,12 +147,12 @@ for(let i=0; i <ticket_Manager.low_priority.length;i++){
     if(softwareAgent.availability < 5){
       await agentModel.updateOne({_id:softwareAgent._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:softwareAgent._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{low_priority:ticket_Manager.low_priority[i]}})
     }
     else if(shelper.availability<5){
       await agentModel.updateOne({_id:shelper._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:shelper._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{low_priority:ticket_Manager.low_priority[i]}})
     }
   }
   if(ticket_details.issueType === "hardware"){
@@ -161,12 +161,12 @@ for(let i=0; i <ticket_Manager.low_priority.length;i++){
     if(hardwareAgent.availability < 5){
       await agentModel.updateOne({_id:hardwareAgent._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:hardwareAgent._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{low_priority:ticket_Manager.low_priority[i]}})
     }
    else if(hhelper.availability < 5){
       await agentModel.updateOne({_id:hhelper._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:hhelper._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{low_priority:ticket_Manager.low_priority[i]}})
     }
   }
   if(ticket_details.issueType === "network"){
@@ -175,12 +175,12 @@ for(let i=0; i <ticket_Manager.low_priority.length;i++){
     if(networkAgent.availability < 5){
       await agentModel.updateOne({_id:networkAgent._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:networkAgent._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{low_priority:ticket_Manager.low_priority[i]}})
     }
     else if(nhelper.availability < 5){
       await agentModel.updateOne({_id:nhelper._id},{$push:{tickets_queue:ticket_Manager.low_priority[i]},$inc:{availability:1}})
       await ticketModel.updateOne({_id:ticket_details._id},{agent:nhelper._id,status:"pending"})
-      await ticketmanagerModel.updateOne({Manager_number:1},{$pop:{low_priority:-1}})
+      await ticketmanagerModel.updateOne({Manager_number:1},{$pull:{low_priority:ticket_Manager.low_priority[i]}})
     }
   }
 }
