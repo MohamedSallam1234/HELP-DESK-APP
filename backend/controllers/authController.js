@@ -147,10 +147,15 @@ module.exports.otpVerify = async (req, res) => {
       process.env.SECRET,
       { expiresIn: 40000 }
     );
+    const expiresAt = new Date(currentTimestamp + 180000000);
     const new_session = await sessionModel.create({
       userId: user._id,
       token,
       expiresAt,
+    });
+    await OtpModel.deleteOne({
+      user: user._id,
+      code: code,
     });
     return res
       .cookie("token", token, {
