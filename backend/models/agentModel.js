@@ -13,29 +13,21 @@ const AgentSchema = new Schema({
         min: 0,
         max: 100,
     },
-    tickets: [
+    tickets_queue: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Ticket'
         }
     ],
     availability: {
-        type: Boolean,
-        default: true
+        type: Number,
+        required:true,
+        default: 0
     },
-    priority: {
-        software: {
-            type: Number,
-            default: 0
-        },
-        hardware: {
-            type: Number,
-            default: 0
-        },
-        network: {
-            type: Number,
-            default: 0
-        }
+    major: {
+     type :String,
+     required:true,
+     default:"software"
     }
 });
 

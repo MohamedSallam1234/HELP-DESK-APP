@@ -20,17 +20,17 @@ const TicketSchema = new mongoose.Schema({
       required:true,
       maxLength:100,
     },
+    // low , medium , high
     priority:{
       type:String,
-      enum:['low','medium','high'],
       required:true,
     },
     status:{
       type:String,
       maxLength: 100,
       required:true,
-      enum:['Pending','Open','Closed'],
-      default:'Pending'
+      enum:['open','pending','closed'],
+      default:'open'
     },
     ticket_rating:{
         type:Number,
@@ -38,6 +38,12 @@ const TicketSchema = new mongoose.Schema({
         max:5,
         default:0,
     },
+    mssg:{
+        type:String,
+        maxLength:1000,
+        required:true
+    },
+
 
     resolution:{
         type:String,
@@ -49,29 +55,12 @@ const TicketSchema = new mongoose.Schema({
         required:true,
         default:Date.now(),
     },
-    informationAboutTicketUserToAgent: [
-        {
-            sender: {
-                type: String,
-                maxlength: 50,
-                required: true,
-                default: "",
-                ref:'User',
-            },
-            message: {
-                type: String,
-                maxlength: 1000,
-                required: true,
-                default: "",
-            },
-            msgAt: {
-                type: Date,
-                required: true,
-                default: Date.now(),
-            },
-        },
-    ],
-}, {timestamps: true});
+    closedAt:{
+        type:Date,
+        required:true,
+        default:Date.now(),
+    }
+})
 
 module.exports= mongoose.model('ticket',TicketSchema);
 

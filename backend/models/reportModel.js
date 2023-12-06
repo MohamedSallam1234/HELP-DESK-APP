@@ -15,14 +15,13 @@ const ReportSchema = new Schema({
         default: 'Pending'
     },
     agent_performance:{
-        type:Number,
-        min: 0,
-        max:100,
+        type:string,
+        default:"No agent"
     },
 
     resolution_time: {
-        type: Number,
-        default: 0,
+        type: string,
+        default: "pending",
     },
     message: {
         type: String,
