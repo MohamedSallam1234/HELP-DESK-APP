@@ -1,7 +1,11 @@
 const express = require('express');
 const connectDB = require('./config/db');
+const notificationRoute = require('./routes/notification');
 
 const app = express();
+app.use(express.json());
+
+app.use('/sendEmail', notificationRoute);
 
 // Connect Database
 connectDB().then(() => console.log('Database Connected'));
