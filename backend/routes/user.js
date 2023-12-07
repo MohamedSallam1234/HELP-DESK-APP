@@ -16,4 +16,7 @@ router.post('/createticket',authorizationMiddleware([1]),userController.sendTick
 // get automated sol.
 router.get('/automatedsol',authorizationMiddleware([1]),userController.automated)
 
+// rating of the ticket
+/*router.put('/rating/:ticketid',authorizationMiddleware([1]),userController.rating)*/
+
   module.exports = router;

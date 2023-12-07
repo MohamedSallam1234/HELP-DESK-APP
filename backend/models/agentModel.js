@@ -7,12 +7,6 @@ const AgentSchema = new Schema({
         ref: 'User',
         required: true,
     },
-    rating: {
-        type: Number,
-        default: 100,
-        min: 0,
-        max: 100,
-    },
     tickets_queue: [
         {
             type: mongoose.Schema.Types.ObjectId,
