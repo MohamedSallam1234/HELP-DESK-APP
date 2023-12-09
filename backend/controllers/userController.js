@@ -204,6 +204,19 @@ module.exports.automated = async (req,res)=>{
     return res.json({mssg:"Error while retriving solution"})
   }
 }
+// user rating for the ticket
+module.exports.rating = async(req,res)=>{
+  const{ticketid} = req.params
+  const{ticket_rating} = req.body
+  try{
+    if(!ticket_rating)return res.json({mssg:"Enter ticket rating"})
+    await ticketModel.updateOne({_id:ticketid},{ticket_rating})
+    return res.json({mssg:"Rating is Sent"}) 
+  }catch(err){
+    console.log(err)
+    return res.json({mssg:"Error in rating"})
+  }
+}
 
 
   
