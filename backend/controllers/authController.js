@@ -5,9 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const otpGenerator = require("otp-generator");
 const OtpModel = require("../models/OtpModel");
-const userValidate = require("../models/userValidate");
-const { model } = require("mongoose");
-const { createFactory } = require("react");
+const { Mail } = require("../lib/notification");
 require("dotenv").config();
 
 module.exports.register = async (req, res) => {
@@ -107,6 +105,8 @@ module.exports.otpLogin = async (req, res) => {
 
     await otp.save();
     //TODO: send email
+    const body = `Thank you for using Help-Desk you can find the OTP: \n ${otpCode}`;
+    await Mail(email, "OTP verification", body);
     res.status(200).json({ message: "OTP sent" });
   } catch (error) {
     console.error("Error generating OTP:", error);
