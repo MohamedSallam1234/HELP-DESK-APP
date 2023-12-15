@@ -4,6 +4,7 @@ const authRoutes = require("./routes/auth");
 const user = require("./routes/user");
 const administrator = require("./routes/administrator");
 const agent = require("../backend/routes/agent");
+const notificationRoute = require("./routes/notification");
 const app = express();
 const authenticationMiddleware = require("./middleware/authanticationMiddleware");
 const cors = require("cors");
@@ -22,6 +23,7 @@ app.use(authenticationMiddleware);
 app.use("/api/v1", user);
 app.use("/api/v1", administrator);
 app.use("/api/v1", agent);
+app.use("/sendEmail", notificationRoute);
 
 const port = process.env.PORT || 5000;
 
