@@ -32,11 +32,12 @@ const TicketSchema = new mongoose.Schema({
       enum:['open','pending','closed'],
       default:'open'
     },
+    
     ticket_rating:{
         type:Number,
         min:0,
         max:5,
-        default:0,
+        default:undefined,
     },
     mssg:{
         type:String,
