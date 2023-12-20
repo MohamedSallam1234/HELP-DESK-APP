@@ -198,6 +198,7 @@ module.exports.automated = async (req,res)=>{
   const{subCategory} = req.params
   try{
     const sol = await automatedModel.findOne({subCategory})
+    if(!sol)return res.json("automated solution is Not Avalible")
     return res.json(sol.automatedWorkflow)
   }catch(err){
     console.log(err)
