@@ -195,7 +195,7 @@ return res.json({mssg:"Ticket has been created"})
 
 // Get automated solution
 module.exports.automated = async (req,res)=>{
-  const{subCategory} = req.body
+  const{subCategory} = req.params
   try{
     const sol = await automatedModel.findOne({subCategory})
     return res.json(sol.automatedWorkflow)

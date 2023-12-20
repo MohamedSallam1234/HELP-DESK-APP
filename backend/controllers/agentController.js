@@ -10,7 +10,7 @@ module.exports.createsol = async (req,res)=>{
         if(!subCategory || !automatedWorkflow)return res.json({mssg:"All fields need to be filled"})
         const check = await automatedModel.findOne({subCategory})
         if(check)return res.json({mssg:"An automated solution already exists"})
-        const agent = await agentModel.findOne({user:req.users._id})
+        const agent = await agentModel.findOne({user:req.user._id})
         await automatedModel.create({agent:agent._id,subCategory,automatedWorkflow})
     return res.json({mssg:"Solution uploaded"})
     }catch(err){

@@ -14,7 +14,7 @@ router.get("/access",authorizationMiddleware([1]) ,userController.Konwledge_base
 router.post('/createticket',authorizationMiddleware([1]),userController.sendTicket);
 
 // get automated sol.
-router.get('/automatedsol',authorizationMiddleware([1]),userController.automated)
+router.get('/automatedsol/:subCategory',authorizationMiddleware([1]),userController.automated)
 
 // rating of the ticket
 router.put('/rating/:ticketid',authorizationMiddleware([1]),userController.rating)

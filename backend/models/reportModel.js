@@ -11,7 +11,7 @@ const ReportSchema = new Schema({
         type: String,
         maxLength: 100,
         required: true,
-        enum: ['Pending', 'Open', 'Closed'],
+        enum: ['pending', 'open', 'closed'],
         default: 'Pending'
     },
     agent_performance:{

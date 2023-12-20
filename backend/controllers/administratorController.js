@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const validator = require ("validator")
 const KonwledgeModle = require("../models/knowledgeModel");
 const knowledgeModel = require("../models/knowledgeModel");
+const ticketModel = require("../models/ticketModel")
+const Report = require("../models/reportModel")
 
 
 module.exports.createusers = async(req,res)=>{
@@ -45,6 +47,12 @@ module.exports.addFAQs = async (req,res)=>{
   await knowledgeModel.create({question,answer,category}) 
   return res.json({mssg:"Added Successfully"})
 }
+
+
+
+
+
+
 
 
 

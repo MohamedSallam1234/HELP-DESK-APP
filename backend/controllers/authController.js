@@ -3,7 +3,7 @@ const sessionModel = require("../models/sessionModel");
 const validator = require ("validator")
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-const userValidate = require("../models/userValidate")
+
 require('dotenv').config();
 
 module.exports.register = async (req,res)=>{

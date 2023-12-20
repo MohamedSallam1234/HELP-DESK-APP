@@ -9,4 +9,5 @@ router.post("/createusers",authorizationMiddleware([2]),adminstratorController.c
 // ada FAQs
 router.post("/addFAQS",authorizationMiddleware([2]),adminstratorController.addFAQs)
 
+
   module.exports = router;
