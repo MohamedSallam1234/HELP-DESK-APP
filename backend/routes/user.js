@@ -19,4 +19,7 @@ router.get('/automatedsol/:subCategory',authorizationMiddleware([1]),userControl
 // rating of the ticket
 router.put('/rating/:ticketid',authorizationMiddleware([1]),userController.rating)
 
+// get all tickets
+router.get('/tickets-view',authorizationMiddleware([1]),userController.gettickets)
+
   module.exports = router;

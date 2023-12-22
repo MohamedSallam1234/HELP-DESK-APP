@@ -219,5 +219,19 @@ module.exports.rating = async(req,res)=>{
   }
 }
 
+//get all user tickets
+module.exports.gettickets = async(req,res)=>{
+  try{
+
+  const tickets = await ticketModel.find({user:req.user._id})
+  if(tickets.length === 0){
+    return res.json({mssg:"No tickets"})}
+    else
+  return res.json(tickets)
+}catch(err){
+  console.log(err)
+  return res.json({mssg:"Error while retriving data"})
+}
+}
 
   
