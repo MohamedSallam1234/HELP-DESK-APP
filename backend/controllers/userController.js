@@ -5,18 +5,16 @@ const agentModel = require("../models/agentModel")
 const ticketModel = require("../models/ticketModel")
 const automatedModel = require("../models/automatedworkflowModel")
 const ticketmanagerModel = require("../models/ticketmanagerModel")
+const bcrypt = require("bcrypt");
 
 // update user info
 module.exports.update = async (req,res)=>{
-const {email,password,name} = req.body
+const {password,name} = req.body
 try{
-    if(!email || !password || !name)return res.json({mssg:"All fields should be filled"})
-
-    const user = await userModle.findOne({email})
-    
-    if(user)return res.json({mssg:"Email is not avalible"})
-
-    await userModle.updateOne({_id:req.user._id},{$set:{email:email,name:name,password:password}})
+    if(!password || !name)return res.json({mssg:"All fields should be filled"})
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt);
+    await userModle.updateOne({_id:req.user._id},{$set:{name:name,password:hashedPassword}})
     return res.json({mssg:`${name}'s profile has been updated`})
 
 }catch(err){
