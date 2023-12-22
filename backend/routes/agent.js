@@ -10,4 +10,9 @@ router.post("/createsol",authorizationMiddleware([4]),agentController.createsol)
 // update and close tickets
 router.put("/updateticket/:ticketid",authorizationMiddleware([4]),agentController.updatetickets)
 
+//get tickets of the agent
+router.get("/agenttickets",authorizationMiddleware([4]),agentController.showTickets)
+
+
+
 module.exports = router;

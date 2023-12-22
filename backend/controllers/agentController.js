@@ -2,6 +2,7 @@ const agentModel = require("../models/agentModel")
 const ticketModel = require("../models/ticketModel")
 const automatedModel = require("../models/automatedworkflowModel")
 const ticketmanagerModel = require("../models/ticketmanagerModel")
+const userModel = require("../models/userModel")
 
 // create an automated solution
 module.exports.createsol = async (req,res)=>{
@@ -170,3 +171,34 @@ module.exports.updatetickets = async (req,res)=>{
       return res.json({mssg:err})
     }
 }
+
+
+
+// get tickets of a user
+module.exports.showTickets = async (req,res)=>{
+ 
+ try{
+ 
+const agent = await agentModel.findOne({user:req.user._id})
+if(!agent) {return res.json({mssg:"No Agent"})}
+if(agent.tickets_queue.length === 0)
+{
+  return res.json({mssg:"No tickets Yet"})
+}else{
+  let tickets =[]
+  for(let i=0 ;i <agent.tickets_queue.length;i++){
+    let ticketinfo = await ticketModel
+    .findOne({ _id: agent.tickets_queue[i] })
+    .populate("user") 
+    .exec();
+    tickets.push(ticketinfo)
+  }
+  console.log(tickets)
+  return res.json(tickets)
+}
+}catch(err){
+console.log(err)
+return res.json({mssg:err})
+}
+}
+
