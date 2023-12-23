@@ -61,7 +61,7 @@ const AgentTickets = () => {
               color: '#fff',
               marginTop:'60px'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+            onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
             onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
           
@@ -81,7 +81,7 @@ const AgentTickets = () => {
               <strong>User Name:</strong> {ticket.user.name}
             </p>
             <Link
-        to="/close-ticket"
+        to={`/close-ticket/${ticket._id}`}
         style={{
           marginTop: '12px',
           backgroundColor: '#2196F3',
