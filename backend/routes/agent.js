@@ -13,6 +13,7 @@ router.put("/updateticket/:ticketid",authorizationMiddleware([4]),agentControlle
 //get tickets of the agent
 router.get("/agenttickets",authorizationMiddleware([4]),agentController.showTickets)
 
-
+// get specific ticket
+router.get('/agentticket/:ticketid',authorizationMiddleware([4]),agentController.agentticket)
 
 module.exports = router;
