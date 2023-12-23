@@ -14,11 +14,11 @@ const automatedWorkflowSchema = new mongoose.Schema({
     },
 
 
-    automatedWorkflow:{
-        type:String,
-        required:true,
-        maxLength:1000,
-    }
+   automatedWorkflow:{
+       type:String,
+       required:true,
+       maxLength:1000,
+   }
 });
 
-module.exports = automatedWorkflow =mongoose.model('automatedWorkflow', automatedWorkflowSchema);
+module.exports = mongoose.model('automatedWorkflow', automatedWorkflowSchema);

@@ -11,18 +11,17 @@ const ReportSchema = new Schema({
         type: String,
         maxLength: 100,
         required: true,
-        enum: ['Pending', 'Open', 'Closed'],
+        enum: ['pending', 'open', 'closed'],
         default: 'Pending'
     },
     agent_performance:{
-        type:Number,
-        min: 0,
-        max:100,
+        type:String,
+        default:"No agent"
     },
 
     resolution_time: {
-        type: Number,
-        default: 0,
+        type: String,
+        default: "pending",
     },
     message: {
         type: String,
@@ -32,4 +31,4 @@ const ReportSchema = new Schema({
     },
 });
 
-module.exports = Report =mongoose.model('report', ReportSchema);
+module.exports =  mongoose.model('report', ReportSchema);

@@ -1,8 +1,19 @@
 const express = require('express');
 const connectDB = require('./config/db');
+const authRoutes = require('./routes/auth')
+const user = require("./routes/user")
+const administrator = require("./routes/administrator")
+const manager = require("./routes/manager")
+const agent = require("../backend/routes/agent")
+const authenticationMiddleware = require("./middleware/authanticationMiddleware");
+const cookieParser = require('cookie-parser');
+const communication = require('./models/communication');
 const notificationRoute = require('./routes/notification');
 
-const communication = require('./models/communication/communication.schema');
+const app = express();
+const http = require('http');
+const cors = require('cors');
+const{Server} = require('socket.io');
 
 //const CryptoJS = require("crypto-js");
 //const crypto = require('crypto');
@@ -34,20 +45,30 @@ const communication = require('./models/communication/communication.schema');
 //      return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
 // }
 
+//
+// const corsOptions = {
+//     origin: 'localhost:5173',
+//     methods: ['GET', 'POST'],
+// };
+//
+//
+// app.use(cors(corsOptions));
 
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST']
+}));
 
-const app = express();
-const http = require('http');
-const cors = require('cors');
-const{Server} = require('socket.io');
-const { format } = require('path');
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 
 const server = http.createServer(app);
-const io = new Server(server,{
-    cors:{
-        origin:'*',
-        methods:['GET','POST']
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
     }
 });
 
@@ -87,17 +108,24 @@ io.on('connection', (socket)=>{
     });
 });
 
-app.use(express.json());
-
+// Connect Database
+connectDB();
 app.use('/sendEmail', notificationRoute);
 
-// Connect Database
-connectDB().then(() => console.log('Database Connected'));
-const port = process.env.PORT|| 5000;
+app.use("/api/v1",authRoutes);
+app.use(authenticationMiddleware);
+app.use('/api/v1', user);
+app.use('/api/v1', administrator);
+app.use('/api/v1',agent);
+app.use('/api/v1',manager);
+//app.use('/sendEmail', notificationRoute);
+
+
+
+const port = process.env.PORT || 5000;
 
 server.listen(port,()=>{
     console.log(`Server running on port ${port}`);
 });
-
 
 

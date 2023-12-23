@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
 
     let mailOptions = {
         from: 'helpdeskapp21@gmail.com',
-        to: req.body.to,
+        to: req.body.email,
         subject: req.body.subject,
         text: req.body.text
     };
