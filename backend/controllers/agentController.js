@@ -3,6 +3,8 @@ const ticketModel = require("../models/ticketModel")
 const automatedModel = require("../models/automatedworkflowModel")
 const ticketmanagerModel = require("../models/ticketmanagerModel")
 const userModel = require("../models/userModel")
+const mongoose = require('mongoose');
+
 
 // create an automated solution
 module.exports.createsol = async (req,res)=>{
@@ -201,4 +203,21 @@ console.log(err)
 return res.json({mssg:err})
 }
 }
+
+
+module.exports.agentticket = async (req,res)=>{
+  const { ticketid } = req.params;
+
+  try{
+    const ticketinfo = await ticketModel.findOne({_id:ticketid}).populate("user").exec();
+    return res.json(ticketinfo)
+  }catch(err){
+    console.log(err)
+    return res.status(422).json({message:'Error in fetching data'});
+
+  }
+}
+
+
+
 
