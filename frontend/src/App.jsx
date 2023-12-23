@@ -6,7 +6,8 @@ import TicketForm from './pages/Ticket';
 import SendTicket from './pages/SendTicket';
 import ViewTickets from './pages/ViewTickets';
 import UpdateInfo from './pages/updateinfo';
-
+import Agent from './pages/Agent';
+import AgentTickets from './pages/agenttickets'
 
 const App = () => {
   return (
@@ -23,6 +24,8 @@ const App = () => {
           <Route exact path="/send-ticket" element={<SendTicket />} />
           <Route exact path="/user-profile" element={<UpdateInfo />} />
           <Route exact path="/view-tickets" element={<ViewTickets />} />
+          <Route exact path="/addautomatedsolution" element={<AgentTickets />}/>
+          <Route exact path="/Agent" element={< Agent/>} />
         </Routes>
       </div>
     </Router>
