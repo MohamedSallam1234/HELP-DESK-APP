@@ -8,7 +8,7 @@ import ViewTickets from './pages/ViewTickets';
 import UpdateInfo from './pages/updateinfo';
 import Agent from './pages/Agent';
 import AgentTickets from './pages/agenttickets'
-
+import CloseTicket from './pages/closeticket'
 const App = () => {
   return (
     <Router>
@@ -25,6 +25,7 @@ const App = () => {
           <Route exact path="/user-profile" element={<UpdateInfo />} />
           <Route exact path="/view-tickets" element={<ViewTickets />} />
           <Route exact path="/addautomatedsolution" element={<AgentTickets />}/>
+          <Route exact path="//close-ticket/:tid" element={<CloseTicket/>}/>
           <Route exact path="/Agent" element={< Agent/>} />
         </Routes>
       </div>
