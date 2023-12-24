@@ -1,0 +1,40 @@
+.knowledgeBase {
+    padding: 20px;
+    background-color: #f5f5f5;
+    font-size: 18px; /* increase the font size */
+}
+
+.knowledgeBase div {
+    margin-bottom: 10px;
+    border: 1px solid #000; /* add a border */
+    padding: 10px; /* add some padding inside the border */
+}
+
+.knowledgeBase button {
+    width: 300px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px; /* increase the font size for the button */
+}
+
+.knowledgeBase input {
+    width: 300px;
+    padding: 10px 20px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 20px; /* increase the font size for the input */
+}
+
+.knowledgeBase button:hover {
+    background-color: #0056b3;
+}
+
+.knowledgeBase p {
+    font-size: 16px; /* increase the font size for the paragraphs */
+}
+
+.knowledgeBase
