@@ -8,7 +8,7 @@ const router = Router();
 router.put("/updateinfo",userController.update)
 
 // Access Knowledge base
-router.get("/access",authorizationMiddleware([1]) ,userController.Konwledge_base)
+router.get("/access" ,userController.Konwledge_base)//,authorizationMiddleware([1])
 
 // send a ticket
 router.post('/createticket',authorizationMiddleware([1]),userController.sendTicket);

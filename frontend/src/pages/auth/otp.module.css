@@ -38,6 +38,22 @@
   background-color: blue;
   color: white;
 }
+.resendOtpButtonDark {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 28rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  background-color: darkblue;
+  color: rgb(235, 227, 227);
+}
+
+resendOtpButtonDark:hover{
+  background-color: darkred;
+}
 
 .resendOtpButton:hover {
   background-color: red;
@@ -59,10 +75,25 @@
   border-radius: 0rem;
 }
 
+.inputDark{
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  text-align: center;
+  border-width: 0px 0px 2px 0px;
+  border-radius: 0rem;
+}
+
 .input:focus-visible {
   outline-width: 0px;
   border-color: blue;
   /* border-bottom-width: 2px; */
+}
+
+inputDark:focus-visible{
+  outline-width: 0px;
+  border-color: darkblue;
 }
 
 .inputsWrapper {
@@ -92,11 +123,32 @@
   background-color: pink;
 }
 
+.wrapperDark {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(93, 73, 76);
+}
+
 .formWrapper {
   display: flex;
   flex-direction: column;
   border-radius: 0.8rem;
   background-color: white;
+  height: 60vh;
+  width: 35vw;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formWrapperDark {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.8rem;
+  background-color: black;
   height: 60vh;
   width: 35vw;
   justify-content: space-between;
@@ -132,5 +184,3 @@
   flex-direction: column;
   gap: 5rem;
 }
-
-

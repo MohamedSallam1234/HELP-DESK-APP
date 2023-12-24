@@ -63,8 +63,8 @@ const Login = () => {
           navigate(`/auth/otp/${email}`);
         }, 1000);
       } else {
-        console.log();
-        // setErrorMessage(message);
+         setErrorMessage("user not registered");
+         console.log(setErrorMessage);
 
 
       }
