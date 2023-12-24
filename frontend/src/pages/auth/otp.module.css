@@ -1,3 +1,13 @@
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  background: url('https://w0.peakpx.com/wallpaper/387/606/HD-wallpaper-plain-soft-blue-marble-textures-marble.jpg') center/cover fixed;
+}
+
 .submitButton {
   /* position: relative;  */
   padding-top: 1rem;
@@ -99,7 +109,7 @@
   gap: 0.8rem;
   width: 100%;
 }
-
+/* dd */
 .sentencesWrapper {
   display: flex;
   flex-direction: column;

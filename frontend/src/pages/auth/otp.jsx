@@ -1,11 +1,63 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./otp.module.css";
-
-import Countdown from "react-countdown";
+import { useParams } from "react-router-dom";
+import Countdown from "react-countdown";  
+import axios from "axios"; 
+import { Link, useNavigate } from "react-router-dom";
 
 const OtpPage = () => {
+  let {email} = useParams(); 
+  let backend_url = "http://localhost:5000/api/v1";
+  const navigate = useNavigate()
   const [values, setValues] = useState(Array(6).fill(null));
   const [isLoading, setIsLoading] = useState(false);
+console.log(values.join(""))
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${backend_url}/otp/verify`,
+        {
+          email: email,
+          code: values.join("")
+        },
+        { withCredentials: true }
+      );
+      // console.log(data);
+      const { status, data } = response;
+      // console.log(status)
+      // console.log(data.user.role)
+       if (status===200) {
+          switch(data.user.role){
+            case 1:
+             // navigate(`/auth/otp/${email}`);//navigate to use
+             console.log('Redirecting to user page');
+             break;
+             case 2:
+              // navigate(`/auth/otp/${email}`);//navigate to admin
+              console.log('Redirecting to admin page');
+             break;
+             case 3:
+              // navigate(`/auth/otp/${email}`);//navigate to manger
+              console.log('Redirecting to manger page');
+             break;
+             case 4:
+              // navigate(`/auth/otp/${email}`);//navigate to agent
+              console.log('Redirecting to agent page');
+             break;
+
+
+          }
+          
+        console.log(data)
+      } else {
+       }
+    } catch (error) {
+      console.log(error);
+      console.log("Invalid OTP");
+    }
+
+  }
 
   const focusInput = (index) => {
     const input = document.getElementById(`verification-code-${index}`);
@@ -80,7 +132,7 @@ const OtpPage = () => {
     event.currentTarget.selectionStart = 0;
     event.currentTarget.selectionEnd = 0;
   };
-
+ 
   const handleInput = (event) => {
     const { value } = event.currentTarget;
     const index = Number(event.currentTarget.id.split("-")[2]);
@@ -98,29 +150,28 @@ const OtpPage = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    const isFull = values.every((value) => value !== null);
-
-    if (!isFull) return alert("Please enter the verification code");
-
-    try {
-      setIsLoading(true);
-      alert("api");
-      //   await api.post('/auth/verify', {
-      //     token: values.join(''),
-      //   });
-      router.push("/");
-    } catch (error) {
-      setIsLoading(false);
-    }
-  };
-
   const [resendOTPDisabled, setResendOTPDisabled] = useState(true)
 
+  const handleResendOTP = async(e)=>{
+    e.preventDefault();
+    setResendOTPDisabled(true)
+    try {
+      const response = await axios.post(
+        `${backend_url}/otp/login`,
+        {
+          email: email,
+        },
+        { withCredentials: true }
+      );
+  }
+     catch {
+
+     }
+  }
   return (
     <div className={styles.wrapper}>
       <div className={styles.formWrapper}>
-        <p className={styles.loginIndicator}>LOGIN</p>
+        <p className={styles.loginIndicator}><Link to={"/login"}>Login</Link></p>
         <div className={styles.sentencesWrapper}>
           <p>
             We have sent you <span>One Time Password</span> to your email
@@ -166,9 +217,7 @@ const OtpPage = () => {
               className={styles.resendOtpButton}
               disabled={resendOTPDisabled}
               type="button"
-              onClick={() => {
-                setResendOTPDisabled(true)
-              }}
+              onClick={handleResendOTP}
             >
               {isLoading ? "Verifying Your Account" : "Resend OTP"}
             </button>
@@ -188,4 +237,6 @@ const OtpPage = () => {
   );
 };
 
+
 export default OtpPage;
+
