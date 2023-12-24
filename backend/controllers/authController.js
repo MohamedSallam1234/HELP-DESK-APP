@@ -4,7 +4,7 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const otpGenerator = require("otp-generator");
-const OtpModel = require("../models/OtpModel");
+const OtpModel = require("../models/otpModel");
 const { Mail } = require("../lib/notification");
 require("dotenv").config();
 
@@ -14,7 +14,7 @@ module.exports.register = async (req, res) => {
     return res.json({ mssg: "Email and Password and Name are Required" });
   try {
     const userExist = await userModel.findOne({ email });
-    if (userExist) return res.json({ mssg: "User already exists" });
+    if (userExist) return res.status(409).json({ mssg: "User already exists" });
 
     if (!validator.isEmail(email))
       return res.json({ mssg: "Wrong Email Format" });
@@ -84,7 +84,7 @@ module.exports.otpLogin = async (req, res) => {
     let otpCode, existingOtp;
 
     do {
-      otpCode = otpGenerator.generate(4, {
+      otpCode = otpGenerator.generate(6, {
         lowerCaseAlphabets: false,
         upperCaseAlphabets: false,
         specialChars: false,
