@@ -243,3 +243,16 @@ module.exports.sendEmail = async (req, res) => {
     });
 };
 
+
+module.exports.agentticket = async (req,res)=>{
+    const { ticketid } = req.params;
+
+    try{
+        const ticketinfo = await ticketModel.findOne({_id:ticketid}).populate("user").exec();
+        return res.json(ticketinfo)
+    }catch(err){
+        console.log(err)
+        return res.status(422).json({message:'Error in fetching data'});
+
+    }
+}

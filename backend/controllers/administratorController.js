@@ -50,6 +50,32 @@ module.exports.createusers = async(req,res)=>{
       }
 }
 
+
+module.exports.changeUserRole = async (req, res) => {
+    const { email, newRole } = req.body;
+
+    if (!email || !newRole) {
+        return res.json({ mssg: "Email and new role are required" });
+    }
+
+    try {
+        const user = await userModel.findOne({ email });
+
+        if (!user) {
+            return res.json({ mssg: "User not found" });
+        }
+
+        user.role = newRole;
+        await user.save();
+
+        return res.json({ mssg: "User role updated successfully" });
+    } catch (err) {
+        console.log(err);
+        return res.json({ mssg: err });
+    }
+};
+
+
 module.exports.addFAQs = async (req,res)=>{
   const{question,answer,category} = req.body
   if (!question||!answer||!category) return res.status(500).send('Please fill all the fields')

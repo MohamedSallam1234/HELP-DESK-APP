@@ -10,6 +10,9 @@ form {
     flex-direction: column;
     width: 300px;
     margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
 label {
@@ -17,7 +20,7 @@ label {
 }
 
 input, textarea {
-    width: 100%;
+    width: 300px;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;

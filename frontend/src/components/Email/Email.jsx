@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 import'./Email.css';
-
+import NavbarAgent from "../../pages/NavbarAgent.jsx";
 const EmailForm = () => {
     const [email, setEmail] = useState('');
     const [subject, setSubject] = useState('');
@@ -29,15 +29,17 @@ const EmailForm = () => {
             console.log("email: " + email);
             console.log("subject: " + subject);
             console.log("message: " + message);
-        fetch('http://localhost:5000/sendEmail', {
+      await  fetch('https://localhost:5000/api/v1/sendEmail', {
+            withCredentials: true,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify({
-                email,
+                to: email,
                 subject,
-                message
+                text: message
             })
         })
             .then((res) => {
@@ -46,6 +48,9 @@ const EmailForm = () => {
             .then((data) => {
                 console.log(data);
                 alert("Email Sent");
+                setEmail('');
+                setSubject('');
+                setMessage('');
             })
             .catch((error) => {
                 console.error('There has been a problem with your fetch operation:', error);
@@ -54,7 +59,9 @@ const EmailForm = () => {
 
 
     return (
+
         <form onSubmit={handleSubmit}>
+             <NavbarAgent/>
             <label>
                 Email:
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />

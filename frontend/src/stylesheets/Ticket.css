@@ -1,0 +1,49 @@
+/* TicketForm.css */
+
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-container {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.select-container {
+    margin-bottom: 15px;
+}
+
+.select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.result-container {
+    margin-top: 20px;
+}
+
+.links-container {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.link {
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #fff;
+    background: #007bff;
+    transition: background 0.3s;
+}
+
+.link:hover {
+    background: #0056b3;
+}
