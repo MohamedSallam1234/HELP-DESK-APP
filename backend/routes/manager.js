@@ -5,7 +5,17 @@ const managerController = require("../controllers/managerController")
 
 
 // generate report
-router.post("/generate/:id",authorizationMiddleware([2]),managerController.generate_report);
+router.post("/generatereport/:id",authorizationMiddleware([3]),managerController.generateReport)
 
-router.post("/get-report/:id",authorizationMiddleware([2]),managerController.generate_report);
+// get specific report
+router.get("/get-report/:id",authorizationMiddleware([3]),managerController.get_a_ticket_report);
+
+// get all tickets
+router.get("/alltickets",authorizationMiddleware([3]),managerController.Analytics)
+
+
+
+
+
+
 module.exports = router;

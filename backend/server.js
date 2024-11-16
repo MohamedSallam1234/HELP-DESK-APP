@@ -10,10 +10,15 @@ const cookieParser = require('cookie-parser');
 const communication = require('./models/communication');
 const notificationRoute = require('./routes/notification');
 
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+
 const app = express();
 const http = require('http');
 const cors = require('cors');
 const{Server} = require('socket.io');
+// const {exec} = require("child_process");
 
 //const CryptoJS = require("crypto-js");
 //const crypto = require('crypto');
@@ -54,9 +59,16 @@ const{Server} = require('socket.io');
 //
 // app.use(cors(corsOptions));
 
+const options = {
+    key: fs.readFileSync(path.resolve(__dirname,'./help-desk-app-privateKey.key')),
+    cert: fs.readFileSync(path.resolve(__dirname,'./help-desk-app.crt'))
+};
+
+
 app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST']
+    origin: 'https://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 }));
 
 app.use(express.json());
@@ -64,11 +76,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 
-const server = http.createServer(app);
+const server = https.createServer(options,app);
 const io = new Server(server, {
     cors: {
-        origin: '*',
-        methods: ['GET', 'POST'],
+        origin: 'https://localhost:5173',
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        credentials: true
     }
 });
 
@@ -110,22 +123,53 @@ io.on('connection', (socket)=>{
 
 // Connect Database
 connectDB();
-app.use('/sendEmail', notificationRoute);
+//app.use('/sendEmail', notificationRoute);
 
 app.use("/api/v1",authRoutes);
 app.use(authenticationMiddleware);
-app.use('/api/v1', user);
+app.use("/api/v1",user);
 app.use('/api/v1', administrator);
 app.use('/api/v1',agent);
 app.use('/api/v1',manager);
+
 //app.use('/sendEmail', notificationRoute);
-
-
 
 const port = process.env.PORT || 5000;
 
 server.listen(port,()=>{
     console.log(`Server running on port ${port}`);
+});
+
+app.get('/backup', (req, res) => {
+    const mongoURI = "mongodb+srv://ibrahimsallam100:mohamed@cluster0.vvarrcg.mongodb.net/HELP-DESK-APPdb?retryWrites=true&w=majority";
+    const backupDir = "C:\\Users\\mohamed\\Desktop\\backup";
+    const dumpCommand = `mongodump --uri="${mongoURI}" --out=${backupDir}`;
+
+    exec(dumpCommand, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error executing mongodump: ${error}`);
+            return res.status(500).send('Error executing mongodump');
+        }
+        console.log(`mongodump stdout: ${stdout}`);
+        console.error(`mongodump stderr: ${stderr}`);
+        res.send('Backup completed successfully');
+    });
+});
+
+app.get('/restore', (req, res) => {
+    const mongoURI = "mongodb+srv://ibrahimsallam100:mohamed@cluster0.vvarrcg.mongodb.net/HELP-DESK-APPdb?retryWrites=true&w=majority";
+    const backupDir = "C:\\Users\\mohamed\\Desktop\\backup";
+    const restoreCommand = `mongorestore --uri="${mongoURI}" ${backupDir}`;
+
+    exec(restoreCommand, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error executing mongorestore: ${error}`);
+            return res.status(500).send('Error executing mongorestore');
+        }
+        console.log(`mongorestore stdout: ${stdout}`);
+        console.error(`mongorestore stderr: ${stderr}`);
+        res.send('Restore completed successfully');
+    });
 });
 
 

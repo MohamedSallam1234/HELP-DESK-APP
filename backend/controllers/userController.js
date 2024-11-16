@@ -8,6 +8,7 @@
 
 const userModle = require("../models/userModel");
 const KonwledgeModle = require("../models/knowledgeModel");
+const knowledgeModel = require("../models/knowledgeModel");
 const agentModel = require("../models/agentModel");
 const ticketModel = require("../models/ticketModel");
 const automatedModel = require("../models/automatedworkflowModel");
@@ -33,12 +34,12 @@ try{
 }
 }
 
-// Get data from the Knowledgebase
+//Get data from the Knowledgebase
 module.exports.Konwledge_base = async(req,res)=>{
   const{category} = req.body
   try{
-    if(category == ""){
-      const all_data = await KonwledgeModle.find({})
+    if(category === ""){
+      const all_data = await KonwledgeModle.find({}).sort({category: 1});
       return res.json(all_data)
     }
     const data = await knowledgeModel.find({category})
@@ -48,6 +49,20 @@ module.exports.Konwledge_base = async(req,res)=>{
       res.status(500).send('Server Error')
   }
 }
+// module.exports.Konwledge_base = async(req,res)=>{
+//   const category = req.category; // get category from query parameters
+//   try{
+//     if(!category || category === ""){
+//       const all_data = await KonwledgeModle.find({}).sort({category: 1}); // sort by category
+//       return res.json(all_data);
+//     }
+//     const data = await knowledgeModel.find({category}).sort({category: 1}); // sort by category
+//     return res.json(data);
+//   }catch(err){
+//     console.log(err);
+//     res.status(500).send('Server Error');
+//   }
+// }
 
 // create a ticket
 module.exports.sendTicket = async (req,res)=>{

@@ -7,7 +7,7 @@ function KnowledgeBase() {
 
     async function fetchData() {
         try {
-            const response = await fetch('http://localhost:5000/api/v1/access', {
+            const response = await fetch('https://localhost:5000/api/v1/access', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

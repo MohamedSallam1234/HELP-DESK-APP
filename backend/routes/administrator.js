@@ -4,10 +4,12 @@ const router = Router();
 const authorizationMiddleware = require("../middleware/authorizationMiddleware")
 
 // create users
-router.post("/createusers",authorizationMiddleware([2]),adminstratorController.createusers)
+router.post("/createusers",authorizationMiddleware([2]),adminstratorController.createusers);
+
+// change user role
+router.post("/changeRole",authorizationMiddleware([2]),adminstratorController.changeUserRole);
 
 // ada FAQs
-router.post("/addFAQS",authorizationMiddleware([2]),adminstratorController.addFAQs)
+router.post("/addFAQS",authorizationMiddleware([2]),adminstratorController.addFAQs);
 
-
-  module.exports = router;
+module.exports = router;

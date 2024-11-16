@@ -1,0 +1,6 @@
+# Handle text files
+* text=auto
+
+# Prevent Git from altering binary files
+*.crt binary
+*.key binary
